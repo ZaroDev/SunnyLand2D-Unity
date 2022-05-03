@@ -9,17 +9,17 @@ public class PlayerHealth : MonoBehaviour
 
     public static event Action OnDamage;
 
-    private void OnEnable()
+    public void Start()
     {
-        
+        health.value = 3;
     }
-
     public void TakeDamage(int amount)
     {
         health.value -= amount;
         if(health.value <= 0)
         {
             health.value = 0;
+            Debug.Log("Player Dead");
         }
 
         OnDamage?.Invoke();

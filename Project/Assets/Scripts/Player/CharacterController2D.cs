@@ -36,8 +36,15 @@ public class CharacterController2D : MonoBehaviour
 	[Space]
 
 	public UnityEvent OnLandEvent;
-
-	private void Awake()
+    private void OnEnable()
+    {
+        PlayerHealth.OnDamage += Hurt;
+    }
+    private void OnDisable()
+    {
+        PlayerHealth.OnDamage -= Hurt;
+    }
+    private void Awake()
 	{
         footEmission = footSteps.emission;
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -113,6 +120,7 @@ public class CharacterController2D : MonoBehaviour
         if (Input.GetButtonUp("Jump") && m_Rigidbody2D.velocity.y > 0)
         {
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_Rigidbody2D.velocity.y * 0.5f);
+            FindObjectOfType<AudioManager>().Play("Jump");
         }
     }
 
@@ -207,4 +215,9 @@ public class CharacterController2D : MonoBehaviour
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+    void Hurt()
+    {
+        animator.SetTrigger("Hurt");
+    }
 }
